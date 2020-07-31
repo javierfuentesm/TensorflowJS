@@ -47,11 +47,10 @@ const guardarModelo = () => {
     download(str, 'modelo.json', 'text/plain');
 }
 
-const cargarModelo = () => {
-    const result= fetch("modelo.json")
-        .then(response => response.json())
-        .then(json => classifier.setClassifierDataset(Object.fromEntries(json.map(([label, data, shape]) => [label, tf.tensor(data, shape)]))));
-
+const cargarModelo = async() => {
+    const result = await fetch("modelo.json")
+    const resultJson = await result.json()
+    classifier.setClassifierDataset(Object.fromEntries(resultJson.map(([label, data, shape]) => [label, tf.tensor(data, shape)])))
 
 }
 
