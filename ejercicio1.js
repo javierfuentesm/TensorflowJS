@@ -21,8 +21,8 @@ t3.dispose()
 
 
 for (let i = 0; i < 100; i++) {
-   const lala= tf.tensor1d([1, 2, 3]);
-   lala.dispose()
+    const lala = tf.tensor1d([1, 2, 3]);
+    lala.dispose()
 }
 
 
