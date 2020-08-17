@@ -8,7 +8,17 @@ const plot = async(pointsArray, featureName)=>{
         }
     )
 }
+const denormalise =(tensor,min,max)=>{
+    return tensor.mul(max.sub(min)).add(min)
+}
+const normalise = (tensor)=>{
+    const min = tensor.min()
+    const max = tensor.max()
 
+    return {tensor:tensor.sub(min).div(max.sub(min)),min,max}
+
+
+}
 const run = async () => {
     const houseSalesDataset = tf.data.csv("http://127.0.0.1:5500/kc_house_data.csv")
     const sampleDataset = houseSalesDataset.take(10)
@@ -28,6 +38,13 @@ const run = async () => {
 
     featureTensor.print()
     labelTensor.print()
+
+    const normaliseFeatureTensor = normalise(featureTensor)
+    const normaliseLabelTensor = normalise(labelTensor)
+    normaliseFeatureTensor.tensor.print()
+    normaliseLabelTensor.tensor.print()
+
+    denormalise(normaliseFeatureTensor.tensor,normaliseFeatureTensor.min,normaliseFeatureTensor.max).print()
 }
 
 run()
