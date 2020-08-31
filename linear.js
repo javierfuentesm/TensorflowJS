@@ -64,6 +64,10 @@ const run = async () => {
     //denormalise(normaliseFeatureTensor.tensor,normaliseFeatureTensor.min,normaliseFeatureTensor.max).print()
 
     const model = createModel()
+    // model.summary()
+    tfvis.show.modelSummary({name: "Model summary"}, model)
+    const layer = model.getLayer(undefined, 0)
+    tfvis.show.layer({name: "Layer 1"}, layer)
 }
 
 run()
