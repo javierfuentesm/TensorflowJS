@@ -45,7 +45,6 @@ const convertirDatosaTensores =
             const etiquetasMin = tensorEtiquetas.min()
 
             // (dato-min)/(max-min)
-
             const entradasNormalizadas = tensorEntradas.sub(entradasMin).div(entradasMax.sub(entradasMin))
             const etiquetasNormalizadas = tensorEtiquetas.sub(entradasMin).div(etiquetasMax.sub(etiquetasMin))
             return {
