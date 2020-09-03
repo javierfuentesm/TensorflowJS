@@ -26,6 +26,11 @@ const createModel = () => {
         activation: 'linear',
         inputDim: 1
     }))
+    const optimizer  = tf.train.sgd(0.1)
+    model.compile({
+        loss: 'meanSquaredError',
+        optimizer
+    })
     return model
 }
 const run = async () => {
