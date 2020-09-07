@@ -33,6 +33,16 @@ const createModel = () => {
     })
     return model
 }
+
+const trainModel =async(model, trainingFeatureTensor,trainingLabelTensor)=>{
+   return model.fit(trainingFeatureTensor,trainingLabelTensor,{
+        epochs: 20,
+        callbacks: {
+            onEpochEnd: (epoch,log)=> console.log(`Epoch ${epoch}: loss = ${log.loss} `)
+        }
+    })
+
+}
 const run = async () => {
     //Import from csv
     const houseSalesDataset = tf.data.csv("http://127.0.0.1:5500/kc_house_data.csv")
@@ -66,13 +76,15 @@ const run = async () => {
     const [trainingFeatureTensor, testingFeatureTensor] = tf.split(normaliseFeatureTensor.tensor, 2)
     const [trainingLabelTensor, testingLabelTensor] = tf.split(normaliseLabelTensor.tensor, 2)
     trainingFeatureTensor.print(true)
+
     //denormalise(normaliseFeatureTensor.tensor,normaliseFeatureTensor.min,normaliseFeatureTensor.max).print()
 
     const model = createModel()
     // model.summary()
-    tfvis.show.modelSummary({name: "Model summary"}, model)
+    tfvis.show.modelSummary({ name: `Model Summary`, tab: `Model` }, model);
     const layer = model.getLayer(undefined, 0)
     tfvis.show.layer({name: "Layer 1"}, layer)
+    await trainModel(model , trainingFeatureTensor,trainingLabelTensor)
 }
 
 run()
