@@ -35,10 +35,14 @@ const createModel = () => {
 }
 
 const trainModel =async(model, trainingFeatureTensor,trainingLabelTensor)=>{
+   const {onBatchEnd,onEpochEnd}= tfvis.show.fitCallbacks({
+        name: 'Training Performance'
+    },['loss'])
    return model.fit(trainingFeatureTensor,trainingLabelTensor,{
+       batchSize: 32,
         epochs: 20,
         callbacks: {
-            onEpochEnd: (epoch,log)=> console.log(`Epoch ${epoch}: loss = ${log.loss} `)
+            onEpochEnd,
         }
     })
 
