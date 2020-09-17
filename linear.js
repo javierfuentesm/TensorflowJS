@@ -41,6 +41,7 @@ const trainModel =async(model, trainingFeatureTensor,trainingLabelTensor)=>{
    return model.fit(trainingFeatureTensor,trainingLabelTensor,{
        batchSize: 32,
         epochs: 20,
+       validationSplit:0.2,
         callbacks: {
             onEpochEnd,
         }
@@ -88,7 +89,18 @@ const run = async () => {
     tfvis.show.modelSummary({ name: `Model Summary`, tab: `Model` }, model);
     const layer = model.getLayer(undefined, 0)
     tfvis.show.layer({name: "Layer 1"}, layer)
-    await trainModel(model , trainingFeatureTensor,trainingLabelTensor)
+    const result =await trainModel(model , trainingFeatureTensor,trainingLabelTensor)
+    const trainingLoss = result.history.loss.pop()
+    console.log(`Training set loss: ${trainingLoss}`)
+
+    const validationLoss = result.history.val_loss.pop()
+    console.log(`Validation set loss: ${validationLoss}`)
+
+
+    const lossTensor = model.evaluate(testingFeatureTensor,testingLabelTensor)
+    const loss = await lossTensor.dataSync()
+    console.log(`Training set loss: ${loss}`)
+
 }
 
 run()
